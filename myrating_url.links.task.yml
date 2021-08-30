@@ -1,0 +1,27 @@
+myrating_url.admin.settings:
+  route_name: myrating_url.admin.settings
+  title: Settings
+  base_route: entity.myrating_url.collection
+  weight: 10
+
+entity.myrating_url.collection:
+  route_name: entity.myrating_url.collection
+  title: 'Список'
+  base_route: entity.myrating_url.collection
+
+myrating_url.page_edit:
+  route_name: entity.myrating_url.edit_form
+  base_route: entity.myrating_url.edit_form
+  title: Edit
+
+myrating_url.delete_confirm:
+  route_name:  entity.myrating_url.delete_form
+  base_route:  entity.myrating_url.edit_form
+  title: Delete
+  weight: 10
+
+
+
+
+
+

@@ -1,0 +1,16 @@
+name: myrating_url
+type: module
+description: My rating.
+package: AAMID
+core_version_requirement: ^8 || ^9
+version: '1.0.0'
+
+dependencies:
+ - fivestar
+
+
+
+
+
+
+

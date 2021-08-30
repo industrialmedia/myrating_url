@@ -1,0 +1,13 @@
+entity.myrating_url.collection:
+  title: 'Рейтинг страниц'
+  description: 'Настройки рейтинга страниц'
+  route_name: entity.myrating_url.collection
+  parent: myseo
+  weight: 90
+
+
+
+
+
+
+

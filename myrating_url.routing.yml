@@ -1,0 +1,58 @@
+myrating_url.admin.settings:
+  path: '/admin/seo/myrating_url/settings'
+  defaults:
+    _title: 'Настройки рейтинга страниц'
+    _form: 'Drupal\myrating_url\Form\MyratingUrlSettingsForm'
+  requirements:
+    _permission: 'administer myrating_url entity'
+
+entity.myrating_url.collection:
+  path: '/admin/seo/myrating_url'
+  defaults:
+    _entity_list: 'myrating_url'
+    _title: 'Рейтинг по конкретному url'
+  requirements:
+    _permission: 'administer myrating_url entity'
+
+# Добавлять только через блок на конкретной странице
+#myrating_url.myrating_url_add:
+#  path: '/admin/seo/myrating_url/add'
+#  defaults:
+#    _entity_form: myrating_url.add
+#    _title: 'Добавить'
+#  requirements:
+#    _entity_create_access: 'myrating_url'
+
+entity.myrating_url.canonical:
+  path: '/admin/seo/myrating_url/{myrating_url}/edit'
+  defaults:
+    _entity_form: myrating_url.edit
+    _title: 'Редактирование рейтинга'
+  requirements:
+    _entity_access: 'myrating_url.edit'
+
+entity.myrating_url.edit_form:
+  path: '/admin/seo/myrating_url/{myrating_url}/edit'
+  defaults:
+    _entity_form: myrating_url.edit
+    _title: 'Редактирование рейтинга'
+  requirements:
+    _entity_access: 'myrating_url.edit'
+
+entity.myrating_url.delete_form:
+  path: '/admin/seo/myrating_url/{myrating_url}/delete'
+  defaults:
+    _entity_form: myrating_url.delete
+    _title: 'Delete myrating_url'
+  requirements:
+    _entity_access: 'myrating_url.delete'
+
+
+
+
+
+
+
+
+
+

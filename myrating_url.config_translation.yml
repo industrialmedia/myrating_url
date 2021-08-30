@@ -1,0 +1,7 @@
+myrating_url.settings:
+  title: 'Рейтинг страниц'
+  base_route_name: myrating_url.admin.settings
+  names:
+    - myrating_url.settings
+
+

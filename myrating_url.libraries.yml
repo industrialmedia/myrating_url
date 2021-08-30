@@ -1,0 +1,12 @@
+myrating_url:
+  version: VERSION
+  js:
+    js/myrating_url.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/jquery.once
+
+
+
+

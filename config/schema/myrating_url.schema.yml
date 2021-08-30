@@ -1,0 +1,10 @@
+myrating_url.settings:
+  type: config_object
+  label: 'Рейтинг страниц'
+  mapping:
+    count_stars:
+      type: integer
+      label: 'Количество звезд'
+
+
+

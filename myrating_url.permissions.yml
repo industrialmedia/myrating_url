@@ -1,0 +1,11 @@
+view myrating_url entity:
+  title: 'View myrating_url entity'
+add myrating_url entity:
+  title: 'Add myrating_url entity'
+edit myrating_url entity:
+  title: 'Edit myrating_url Entity'
+delete myrating_url entity:
+  title: 'Delete myrating_url entity'
+administer myrating_url entity:
+  title: 'Administer myrating_url entity'
+  restrict access: TRUE
