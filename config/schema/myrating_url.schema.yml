@@ -7,4 +7,14 @@ myrating_url.settings:
       label: 'Количество звезд'
 
 
+block.settings.myrating_url:
+  type: block_settings
+  label: 'Rating for url'
+  mapping:
+    text_chema_org:
+      type: text
+      label: 'Text chema org'
+    text_submit:
+      type: label
+      label: 'Text submit'
 

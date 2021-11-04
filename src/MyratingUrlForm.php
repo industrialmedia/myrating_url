@@ -11,8 +11,9 @@ use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\votingapi\VoteResultFunctionManager;
-
-
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\HtmlCommand;
 
 
 /**
@@ -115,6 +116,30 @@ class MyratingUrlForm extends ContentEntityForm {
       unset($form['actions']['delete']);
       $form['#attached']['library'][] = 'myrating_url/myrating_url';
       $form['actions']['#attributes']['style'] = 'display:none';
+      $form['actions']['submit']['#attributes']['style'] = 'display:none'; // Fix empty html to actions
+      // Ajax отправка формы
+      if (empty($user_input['form_wrapper_id'])) {
+        $form_wrapper_id = Html::getUniqueId('myrating-url-form') . '-wrapper';
+      } else {
+        $form_wrapper_id = $user_input['form_wrapper_id'];
+      }
+      $form['form_wrapper_id'] = [
+        '#type' => 'hidden',
+        '#value' => $form_wrapper_id,
+      ];
+      $form['#prefix'] = '<div id="' . $form_wrapper_id . '">';
+      $form['#suffix'] = '</div>';
+      $form['actions']['submit']['#ajax'] = [
+        'callback' => [get_class($this), 'ajaxRefresh'],
+        'event' => 'click',
+        'effect' => 'fade',
+        'progress' => [
+          'type' => 'throbber',
+          'message' => '',
+        ],
+      ];
+      // End Ajax
+
     }
 
     $form['actions']['#weight'] = 501;
@@ -136,7 +161,7 @@ class MyratingUrlForm extends ContentEntityForm {
 
     if ($operation == 'add_or_edit') {
       if (!empty($storage['text_submit'])) {
-        $this->messenger()->addStatus($this->t($storage['text_submit']));
+        $this->messenger()->addStatus($storage['text_submit']);
       }
     }
     else {
@@ -163,6 +188,26 @@ class MyratingUrlForm extends ContentEntityForm {
   }
 
 
+
+  public static function ajaxRefresh($form, FormStateInterface $form_state) {
+    $response = new AjaxResponse();
+    $user_input = $form_state->getUserInput();
+    $storage = $form_state->getStorage();
+    unset($form['#prefix']);
+    unset($form['#suffix']);
+
+    if ($form_state->hasAnyErrors()) {
+      $response->addCommand(new HtmlCommand('#' . $user_input['form_wrapper_id'], $form));
+    } else {
+      $form['text_submit'] = [
+        '#markup' => '<div class="text-submit-success">' . $storage['text_submit'] . '</div>',
+        '#weight' => 500,
+      ];
+      $response->addCommand(new HtmlCommand('#' . $user_input['form_wrapper_id'], $form));
+    }
+    \Drupal::messenger()->deleteAll();
+    return $response;
+  }
 
 
 

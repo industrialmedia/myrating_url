@@ -123,14 +123,15 @@ class MyratingUrlBlock extends BlockBase implements ContainerFactoryPluginInterf
     return [
       'text_submit' => 'Спасибо, ваш голос учтен!',
       'text_chema_org' => '
-<div itemprop="creativeWorkSeries" itemscope itemtype="http://schema.org/CreativeWorkSeries" class="hidden">
-  <div itemprop="name">[site:name]. [current-page:title]</div>.
-  <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-    Общий рейтинг: <span itemprop="ratingValue">%ratingValue</span>/
-    <span itemprop="bestRating">%bestRating</span>
-    на основе <span itemprop="reviewCount">%reviewCount</span> человек.
-  </div>
-</div>',
+        <div itemprop="creativeWorkSeries" itemscope itemtype="http://schema.org/CreativeWorkSeries">
+          <div itemprop="name" content="[site:name]. [current-page:title]"></div>
+          <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+              Проголосовало <span itemprop="reviewCount">%reviewCount</span> 
+              оценка <span itemprop="ratingValue">%ratingValue</span> 
+              из <span itemprop="bestRating">%bestRating</span>
+          </div>
+        </div>
+        ',
     ];
   }
 
