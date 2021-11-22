@@ -204,7 +204,7 @@ class MyratingUrlBlock extends BlockBase implements ContainerFactoryPluginInterf
         '#type' => 'markup',
         '#markup' => '<div class="text-chema-org">' .
           t($config['text_chema_org'], [
-            '%ratingValue' => 5 * $vote_average / 100,
+            '%ratingValue' => round(5 * $vote_average / 100, 1),
             '%bestRating' => '5',
             '%reviewCount' => $vote_count,
           ]) . '</div>',
