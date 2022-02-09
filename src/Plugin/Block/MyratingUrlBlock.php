@@ -10,6 +10,7 @@ use Drupal\votingapi\VoteResultFunctionManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Utility\Token;
+use Drupal\Core\Config\ConfigFactoryInterface;
 
 /**
  * @Block(
@@ -48,9 +49,6 @@ class MyratingUrlBlock extends BlockBase implements ContainerFactoryPluginInterf
   protected $voteResultManager;
 
 
-
-
-
   /**
    * Token service.
    *
@@ -58,6 +56,13 @@ class MyratingUrlBlock extends BlockBase implements ContainerFactoryPluginInterf
    */
   protected $token;
 
+
+  /**
+   * Stores the configuration factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
 
   /**
    * Constructs a new CartBlock.
@@ -76,14 +81,17 @@ class MyratingUrlBlock extends BlockBase implements ContainerFactoryPluginInterf
    *   The vote result manager.
    * @param \Drupal\Core\Utility\Token $token
    *   The token utility.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MyratingUrlStorage $myrating_url_storage, RendererInterface $renderer, VoteResultFunctionManager $vote_result_manager, Token $token) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MyratingUrlStorage $myrating_url_storage, RendererInterface $renderer, VoteResultFunctionManager $vote_result_manager, Token $token, ConfigFactoryInterface $config_factory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->myratingUrlStorage = $myrating_url_storage;
     $this->renderer = $renderer;
     $this->myrating_url = $this->myratingUrlStorage->getMyratingUrlBySourcePath();
     $this->voteResultManager = $vote_result_manager;
     $this->token = $token;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -103,7 +111,8 @@ class MyratingUrlBlock extends BlockBase implements ContainerFactoryPluginInterf
       $container->get('entity_type.manager')->getStorage('myrating_url'),
       $renderer,
       $vote_result_manager,
-      $token
+      $token,
+      $container->get('config.factory')
     );
   }
 
@@ -120,18 +129,12 @@ class MyratingUrlBlock extends BlockBase implements ContainerFactoryPluginInterf
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
+    // Берем дефолтные значения из myrating_url.settings потому что могут создавть блоки без конфигруации (пример модуль embed_block)
+    // В обекте $this здесь еще нет данных, поэтому испльзуем глобальный \Drupal::configFactory(), а не $this->configFactory
+    $myrating_url_config =  \Drupal::configFactory()->get('myrating_url.settings');
     return [
-      'text_submit' => 'Спасибо, ваш голос учтен!',
-      'text_chema_org' => '
-        <div itemprop="creativeWorkSeries" itemscope itemtype="http://schema.org/CreativeWorkSeries">
-          <div itemprop="name" content="[site:name]. [current-page:title]"></div>
-          <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-              Проголосовало <span itemprop="reviewCount">%reviewCount</span> 
-              оценка <span itemprop="ratingValue">%ratingValue</span> 
-              из <span itemprop="bestRating">%bestRating</span>
-          </div>
-        </div>
-        ',
+      'text_submit' => $myrating_url_config->get('text_submit'),
+      'text_chema_org' => $myrating_url_config->get('text_chema_org'),
     ];
   }
 
@@ -153,12 +156,12 @@ class MyratingUrlBlock extends BlockBase implements ContainerFactoryPluginInterf
       '#default_value' => $config['text_chema_org'],
       '#rows' => 15,
     ];
-    $form['token_tree'] = array(
+    $form['token_tree'] = [
       '#theme' => 'token_tree_link',
       '#token_types' => [],
       '#show_restricted' => TRUE,
       '#show_nested' => FALSE,
-    );
+    ];
     return $form;
   }
 
@@ -176,6 +179,9 @@ class MyratingUrlBlock extends BlockBase implements ContainerFactoryPluginInterf
    * {@inheritdoc}
    */
   public function build() {
+
+
+
     $config = $this->getConfiguration();
     $build = [];
     $build['#cache']['contexts'] = ['route'];
@@ -197,7 +203,7 @@ class MyratingUrlBlock extends BlockBase implements ContainerFactoryPluginInterf
     $build['form'] = $this->myratingUrlStorage->getMyratingUrlForm(NULL, $config['text_submit']);
 
 
-    $config['text_chema_org'] = $this->token->replace($config['text_chema_org'], [], array('clear' => TRUE));
+    $config['text_chema_org'] = $this->token->replace($config['text_chema_org'], [], ['clear' => TRUE]);
 
     if ($vote_count) {
       $build['text_chema_org'] = [

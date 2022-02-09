@@ -1,1 +1,3 @@
 count_stars: 5
+text_chema_org: "<div itemprop=\"creativeWorkSeries\" itemscope itemtype=\"http://schema.org/CreativeWorkSeries\">\r\n          <div itemprop=\"name\" content=\"[site:name]. [current-page:title]\"></div>\r\n          <div itemprop=\"aggregateRating\" itemscope itemtype=\"http://schema.org/AggregateRating\">\r\n              Проголосовало <span itemprop=\"reviewCount\">%reviewCount</span> \r\n              оценка <span itemprop=\"ratingValue\">%ratingValue</span> \r\n              из <span itemprop=\"bestRating\">%bestRating</span>\r\n          </div>\r\n        </div>\r\n        "
+text_submit: 'Спасибо, ваш голос учтен!'

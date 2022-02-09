@@ -1,8 +1,8 @@
 myrating_url.admin.settings:
   route_name: myrating_url.admin.settings
   title: Settings
-  base_route: entity.myrating_url.collection
-  weight: 10
+  base_route: myrating_url.admin.settings
+
 
 entity.myrating_url.collection:
   route_name: entity.myrating_url.collection

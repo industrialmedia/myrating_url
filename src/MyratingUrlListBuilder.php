@@ -15,6 +15,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
 
 /**
  * Provides a list controller for myrating_url entity.
+ *
  * @ingroup myrating_url
  */
 class MyratingUrlListBuilder extends EntityListBuilder {
@@ -138,8 +139,14 @@ class MyratingUrlListBuilder extends EntityListBuilder {
    */
   public function render() {
     $build = parent::render();
+
+    $link = Link::createFromRoute('Настройки', 'myrating_url.admin.settings');
+    $link = $link->toString();
+
     $build['help'] = [
-      '#markup' => '<p>Добавить голоса для конкретной страницы можно только на странице.</p>',
+      '#markup' => '
+        <p>Добавить голоса для конкретной страницы можно только на странице.</p>
+        <h3>' . $link . ' рейтинга страниц</h3>',
       '#weight' => -10,
     ];
     $build = [

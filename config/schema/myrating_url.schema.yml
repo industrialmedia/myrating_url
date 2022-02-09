@@ -5,7 +5,12 @@ myrating_url.settings:
     count_stars:
       type: integer
       label: 'Количество звезд'
-
+    text_chema_org:
+      type: text
+      label: 'Text chema org'
+    text_submit:
+      type: label
+      label: 'Text submit'
 
 block.settings.myrating_url:
   type: block_settings
@@ -17,4 +22,5 @@ block.settings.myrating_url:
     text_submit:
       type: label
       label: 'Text submit'
+
 
